@@ -1,0 +1,1 @@
+!function(){"use strict";var o;o=JSON.parse('{"name":"王五麻子","age":39}'),console.log({name:"赵云",age:18,gender:"男"}),console.log([1,2,3,4].reduce(((o,e)=>o+e),0)),console.log([1,2,3]),console.log("天风"),console.log(o)}();

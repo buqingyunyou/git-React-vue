@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="box"></div>
+
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <script type="text/babel">
+    // 1.定义组件
+    class Form extends React.Component {
+      // 1.设置初始state值
+      state = {
+        username: '',
+        password: '',
+      }
+
+      // 定义一个高阶函数,函数返回一个函数,作为两个input的onChange事件的回调函数
+      handlerChange = (key) => {
+        return (event) => {
+          // 2.将获取的value值更新到state中
+          this.setState({
+            [key]: event.target.value.trim(),
+          })
+        }
+      }
+
+      // 绑定form表单提交事件
+      handlerSubmit = (event) => {
+        event.preventDefault();
+        // 3.获取state值
+        const { username, password } = this.state;
+        console.log(`用户名:${username} 密码:${password}`);
+      }
+
+
+      render() {
+        return (
+          <form onSubmit={this.handlerSubmit}>
+            用户名: <input type="text" placeholder="请输入用户名" autoComplete="off" onChange={this.handlerChange('username')} />
+    密码: <input type="password" placeholder="请输入密码" autoComplete="off" onChange={this.handlerChange('password')} />
+            <button>登录</button>
+          </form>
+        )
+      }
+    }
+
+    // 2.渲染组件
+    ReactDOM.render(<Form />, document.getElementById('box'));
+
+
+  </script>
+</body>
+
+</html>

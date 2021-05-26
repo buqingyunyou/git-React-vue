@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="box"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <script type="text/babel">
+    class LifeCycle extends React.Component {
+      // 页面有变化,需要使用state
+      state = {
+        opacity: 1,
+      }
+
+      // 设置定时器等一次性任务
+      componentDidMount() {
+        this.timer = setInterval(() => {
+          // 获取state
+          let { opacity } = this.state;
+          opacity -= 0.1;
+          // 判断等于0时,重新设置为1
+          if (opacity <= 0) opacity = 1;
+          this.setState({
+            opacity,
+          })
+        }, 100)
+      }
+
+      // 移除组件前,要先清除定时器
+      componentWillUnmount() {
+        clearInterval(this.timer);
+      }
+
+      handlerClick = () => {
+        ReactDOM.unmountComponentAtNode(document.getElementById('box'));
+      }
+
+      render() {
+        const { opacity } = this.state
+        return <div>
+          {/* react中写样式,是设置行内样式 */}
+          <h1 style={{ opacity }}>LifeCycle</h1>
+          <button onClick={this.handlerClick}>移除组件</button>
+        </div>
+      }
+    }
+
+    ReactDOM.render(<LifeCycle />, document.getElementById('box'));
+  </script>
+</body>
+
+</html>

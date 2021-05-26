@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="cont1"></div>
+  <div id="cont2"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <script type="text/babel">
+    // 1.通过工厂函数定义组件
+    function MyComponent1() {
+      const text = "工厂函数组件"
+      return <h1>{text}</h1>
+    }
+
+    // 2.通过类定义组件 (必须继承React.Component)
+    class MyComponent2 extends React.Component {
+      text = "类组件"
+      render() {
+        // console.log(console.log(this)); //组件实例对象
+        return <h2>{this.text}</h2>;
+      }
+    }
+
+    // 渲染
+    ReactDOM.render(<MyComponent1 />,document.getElementById('cont1'))
+    ReactDOM.render(<MyComponent2 />,document.getElementById('cont2'))
+
+  </script>
+</body>
+
+</html>

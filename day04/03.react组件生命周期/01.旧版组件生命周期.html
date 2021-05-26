@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+
+    class Fa extends React.Component {
+      state = {}
+      // 父组件更新时 setState(),子组件会执行所有的更新勾子
+      handlerClick = () => [
+        this.setState({})
+      ]
+      render() {
+        return <div>
+          <h1 onClick={this.handlerClick}>父组件</h1>
+          <Son />
+        </div>
+      }
+    }
+
+    // 1.定义组件
+    class Son extends React.Component {
+      state = {}
+      // 初始化: 初始化生命周期的勾子
+      constructor() {
+        super();
+        console.log("constructor");
+      }
+      UNSAFE_componentWillMount() {
+        console.log("UNSAFE_ComponentWillMount");
+      }
+      componentDidMount() {
+        console.log("componentDidMount");
+      }
+
+
+      // 更新: 更新生命周期的勾子
+      UNSAFE_componentWillReceiveProps() {
+        console.log("UNSAFE_componentWillReceivedProps");
+      }
+      shouldComponentUpdate() {
+        console.log("shouldComponentUpdate");
+        return true;
+      }
+      UNSAFE_componentWillUpdate() {
+        console.log("UNSAFE_componentWillUpdate");
+      }
+      componentDidUpdate() {
+        console.log("componentDidUpdate");
+      }
+
+      componentWillUnmount() {
+        console.log("componentWillUnmount");
+      }
+
+      handlerClick = () => {
+        // this.setState({}) //this.setState()会调用四个更新勾子
+        // this.forceUpdate(() => { }) //this.forceUpdate()会调用三个更新勾子
+
+        // 移除组件
+        ReactDOM.unmountComponentAtNode(document.getElementById("cont"))
+      }
+      // 初始化和更新阶段都会调用: render()
+      render() {
+        console.log("render");
+        return <h1 onClick={this.handlerClick}>组件生命周期(旧)</h1>
+      }
+    }
+
+    // 2.渲染组件
+    ReactDOM.render(<Fa />, document.getElementById("cont"))
+  </script>
+</body>
+
+</html>

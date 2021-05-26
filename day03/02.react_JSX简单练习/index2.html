@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>前端技术栈列表</h1>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <script type="text/babel">
+    // 需求: 动态展示列表数据
+
+    // 后台数据
+    const data = ['jquery', 'bootstrap', 'react', 'webpack', 'gulp', 'vue']
+
+    // 1.创建虚拟DOM
+    const vDOM = <ul>
+      {
+        // 因为是JSX语法,可以直接将js代码和html代码混合使用
+        // 根据数据,最终要生成<li>jquery</li><li>bootstrap</li>...
+        data.map((item,index)=>{
+          return <li key={index}>{item}</li>
+        })
+      }
+    </ul>
+
+    /* 
+      ReactDOM.render(参数一,参数二)
+        -参数一: 有两种, 一种是虚拟DOM对象; 一种是组件实例对象
+        -参数二: 真实容器DOM
+    */
+  // 2.渲染虚拟DOM
+  ReactDOM.render(vDOM,document.getElementById('cont'));
+
+
+  </script>
+</body>
+
+</html>

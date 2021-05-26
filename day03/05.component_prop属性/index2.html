@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <!-- 此包用于约束组件实例对象的props属性对象 -->
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <!-- 
+    需求: 自定义用来显示一个人员信息的组件
+      1). 姓名必须指定
+      2). 如果性别没有指定, 默认为男
+      3). 如果年龄没有指定, 默认为18
+   -->
+
+  <script type="text/babel">
+    // 后台数据
+    const data = {
+      name: "王越峰",
+      age: 10,
+      gender: "男"
+    }
+    // 1.定义组件
+    class PersonInfo extends React.Component {
+
+      // 对通过组件标签属性传递进来的属性对象,进行约束
+      static propTypes = {
+        name: PropTypes.string.isRequired, //必要性和类型
+        age: PropTypes.number, //类型检查
+        gender: PropTypes.oneOf(["男", "女"]) //取值范围限定
+      }
+
+      // 对通过组件标签属性传递进来的属性对象,设置默认值
+      static defaultProps = {
+        age: 18,
+        gender: "男",
+      }
+
+      render() {
+        // 接收传递进来的数据
+        const { name, age, gender } = this.props
+        // 根据数据,更新虚拟DOM元素
+        return <ul>
+          <li>姓名:{name}</li>
+          <li>年龄:{age}</li>
+          <li>性别:{gender}</li>
+        </ul>
+      }
+    }
+
+    // 2.渲染组件 (通过组件标签属性传递数据,到组件内部,经过组件内部处理后,渲染到页面)
+    // (1) props属性对象的所有属性,都传递了数据
+    // ReactDOM.render(<PersonInfo name={data.name} age={data.age} gender={data.gender} />, document.getElementById('cont'))
+    ReactDOM.render(<PersonInfo {...data}/>,document.getElementById('cont'))
+
+    // (2) props属性对象的部分属性,传递了数据,没有传递的使用默认值
+    // ReactDOM.render(<PersonInfo name={data.name} />, document.getElementById('cont'))
+
+
+  </script>
+</body>
+
+</html>

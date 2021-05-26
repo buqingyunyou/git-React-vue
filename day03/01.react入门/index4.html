@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<!-- 
+  在html页面中:
+    1.在head标签的style标签中,写css代码
+    2.在body标签的script标签中,写js代码
+ -->
+
+<body>
+  <!-- 
+    使用react创建虚拟DOM的两种方式:
+      1.使用JS语法创建
+      2.使用JSX语法创建
+   -->
+  <div id="box1"></div>
+  <div id="box2"></div>
+
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <!-- <script type="text/babel"> -->
+
+  <!--  1.使用JS语法创建虚拟dom (不需要babel进行语法转换) -->
+  <script>
+    const p1 = React.createElement('p', { id: "test1" }, "这是h1中的子元素p1")
+    const p2 = React.createElement('p', { id: "test2" }, "这是h1中的子元素p2")
+    /* 
+      React.createElemnet(参数1, 参数二, 参数三...)
+        参数一: 设置创建的元素是什么标签元素
+        参数二: 设置该标签元素上的标签属性, 以对象的形式设置
+        参数三及更多: 设置元素的内容 (文本内容,或者是子元素等等..)
+    */
+    const h1 = React.createElement('h1', { className: "test" }, "第一种创建虚拟DOM的方式", p1, p2);
+    ReactDOM.render(h1, document.getElementById('box1'));
+  </script>
+
+  <!-- 2.使用JSX语法创建虚拟dom (需要babel的支持) -->
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // 1.创建虚拟DOM
+    const div2 = <div>这是div中的子元素1</div>
+    const div3 = <div>这是div中的子元素2</div>
+    /* 
+      使用JSX语法创建虚拟DOM, 对照模板字符串拼接元素的写法,就当做字符串进行拼接
+    */
+    const div = <div>
+      {div2}{div3}
+    </div>
+    // 2.渲染到容器
+    ReactDOM.render(div, document.getElementById('box2'))
+
+  </script>
+</body>
+
+</html>

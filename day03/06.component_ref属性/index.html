@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<!--
+    需求: 自定义组件, 功能说明如下:
+      2. 点击按钮, 提示第一个输入框中的值
+      3. 当第2个输入框失去焦点时, 提示这个输入框中的值
+ -->
+
+<!-- 
+  ref属性的作用:
+    1.给普通元素设置ref属性,会获取到该元素的真实DOM元素,并自动将其挂载到组件实例对象的ref容器的current中;
+    2.给组件设置ref属性,可获取到该组件的实例对象;
+  -->
+
+<body>
+  <div id="container1"></div>
+  <div id="container2"></div>
+
+  <!-- react核心库 -->
+  <script src="../js/react.js"></script>
+  <!-- react操作dom的库 -->
+  <script src="../js/react-dom.js"></script>
+  <!-- JSX转JS的库 -->
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // 定义组件1
+    class Test extends React.Component {
+      render() {
+        return <p>组件2...</p>
+      }
+    }
+
+    // 定义组件2
+    class MyInput extends React.Component {
+
+      // 给组件实例化对象初始化一个inputRef容器,该容器有一个current属性,存储的是挂载在其中的真实DOM元素
+      inputRef = React.createRef();
+      comRef = React.createRef();
+
+      // 定义点击事件的回调函数 (箭头函数,则该方法直接挂载到实例对象的直接属性上)
+      handlerClick = () => {
+        // 获取前一个input的value值
+        console.log(this.inputRef);
+        alert(this.inputRef.current.value);
+      }
+      // 定义失去焦点事件的回调函数
+      handlerBlur = (e) => {
+        // 事件触发的dom元素和需要获取的dom元素是同一个元素,使用event.target
+        alert(e.target.value);
+      }
+
+      render() {
+        return (
+          <div>
+            {
+              //给input添加ref属性,值为ref容器,内部就会将input虚拟DOM对象生成的真实DOM元素自动挂载到组件实例对象的ref容器上
+            }
+            <input type="text" ref={this.inputRef} />
+            <button onClick={this.handlerClick} >点击提示输入框的内容</button>
+            <input type="text" placehoulder="失去焦点时提示" onBlur={this.handlerBlur} />
+
+            {
+              // 给Test组件添加ref属性,获取的是组件实例对象
+            }
+            <Test ref={this.comRef} />
+          </div>)
+      }
+    }
+
+    // 将虚拟DOM渲染到页面容器
+    ReactDOM.render(<MyInput />, document.getElementById('container1'))
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/babel.min.js"></script>
+  <!-- 
+    组件: 可以当做是一个虚拟DOM元素
+      原因: 组件最终会调用render方法,返回一个虚拟DOM对象
+   -->
+
+  <!-- 
+    需求: 自定义组件, 功能说明如下:
+      2. 点击按钮, 提示第一个输入框中的值
+      3. 当第2个输入框失去焦点时, 提示这个输入框中的值
+   -->
+  <script type="text/babel">
+
+    class Test extends React.Component{
+      render(){
+        return <p>测试给组件设置ref</p>
+      }
+    }
+
+
+    // 1.定义组件
+    class PromptInput extends React.Component {
+      // 创建ref容器,相当于将ref绑定到实例对象的直接属性上
+      inputRef = React.createRef();
+      testRef = React.createRef();
+
+      handlerClick = () => {
+        //在类中使用定义箭头函数,相当于将函数绑定到了实例对象的直接属性上
+        console.log(this.inputRef.current);
+        console.log(this);
+        alert(this.inputRef.current.value);
+
+      }
+      handlerBlur = (e) => {
+        // 事件触发元素和要获取的元素是同一元素,直接使用event.target获取
+        alert(e.target.value);
+      }
+
+      render() { //在类中直接定义函数,相当于将函数绑定在了类的原型对象的属性上
+        return <div>
+          {
+            // 给普通元素绑定ref属性
+          }
+          <input type="text" ref={this.inputRef} />
+          <button onClick={this.handlerClick}>提示</button>
+          <input onBlur={this.handlerBlur} type="text" />
+          {
+            //给组件绑定ref属性
+          }
+          <Test ref={this.testRef} />
+        </div>
+      }
+    }
+
+    // 2.渲染组件
+    ReactDOM.render(<PromptInput />, document.getElementById('cont'))
+
+
+  </script>
+</body>
+
+</html>

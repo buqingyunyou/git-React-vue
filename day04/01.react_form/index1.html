@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<!-- 
+  在react应用中, 如何收集表单输入数据
+    1.受控组件: 通过state和onChange事件的方式,自动收集表单数据
+    2.非受控组件: 需要时通过ref容器收集表单数据
+
+ -->
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <!-- 
+      需求: 自定义包含表单的组件
+        1. 输入用户名密码后, 点击登陆提示输入信息
+        2. 不提交表单
+   -->
+  <script type="text/babel">
+    // 1.定义受控组件 (将value值设置到state中)
+    class Form extends React.Component {
+      // 1) 初始化state值
+      state = {
+        username: '',
+        password: '',
+      }
+
+      // 定义提交事件函数
+      handlerSubmit = () => {
+        // 获取state值
+        const {username,password} = this.state;
+        // 打印提示信息(使用state值)
+        alert(`用户名:${username} 密码:${password}`);
+
+      }
+
+      /* 
+        onChange事件,用于收集value值,更新到state中
+      */
+      // 定义表单onChange事件函数(因为要定义两个,且逻辑相似,使用高阶函数进行复用)
+      handlerChange = (key) => {
+        return (event) => {
+          // 获取当前输入框的value值
+          const value = event.target.value.trim();
+          // 将value值更新到state中
+          this.setState({
+            [key]: value,
+          })
+        }
+      }
+
+
+      render() {
+        return <form onSubmit={this.handlerSubmit}>
+          {/*在onChange绑定事件时,是先调用handlerChange方法,将其返回值(函数)绑定在了该事件上*/}
+          用户名: <input type="text" placeholder="请输入用户名" onChange={this.handlerChange('username')} />
+            密码: <input type="password" placeholder="请输入密码" onChange={this.handlerChange('password')} />
+          <button>提示</button>
+        </form>
+      }
+    }
+    // 2.渲染组件
+    ReactDOM.render(<Form />, document.getElementById('cont'))
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "f_day01",
+  "version": "1.0.0",
+  "description": "测试git提交代码到远程仓库",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitee.com:duanjiahong/f_day01.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0"
+  }
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // 1.定义组件
+    class ComponentTest extends React.Component {
+      state = {}
+      // 组件挂载阶段
+      constructor() {
+        super();
+        console.log("挂载 constructor");
+      }
+      static getDerivedStateFromProps() { //用于修改state数据,必须要有返回值obj/null
+        console.log("挂载|更新 getDerivedStateFromProps");
+        return null;
+      }
+
+      componentDidMount() { //操作DOM,发请求,绑事件,设置定时器等一次性操作
+        console.log("挂载 componentDidMount");
+      }
+
+      // 组件更新阶段
+      shouldComponentUpdate() {  //组件优化,减少部分组件渲染次数
+        console.log("更新 shouldComponentUpdate");
+        return true
+      }
+      componentDidUpdate() {
+        console.log("更新 componentDidUpdate");
+      }
+      getSnapShotBeforeUpdate() { //更新render前,操作DOM
+        console.log("更新 getSnapShotBeforeUpdate");
+      }
+
+      // 组件卸载阶段
+      componentUnmount() { //清除定时器,解绑事件等
+        console.log("componentWillUnmount");
+      }
+
+      handlerClick = () => {
+        this.setState({})
+      }
+
+      render() { //返回组件要渲染的虚拟DOM
+        console.log("挂载|更新 render");
+        return <h1 onClick={this.handlerClick}>组件生命周期(新版)</h1>
+      }
+    }
+
+    // 2.渲染组件
+    ReactDOM.render(<ComponentTest />, document.getElementById('cont'))
+
+  </script>
+</body>
+
+</html>

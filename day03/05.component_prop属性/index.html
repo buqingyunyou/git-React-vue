@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text">
+  <div id="container1"></div>
+  <div id="container2"></div>
+  <!-- react核心库 -->
+  <script src="../js/react.js"></script>
+  <!-- react操作dom的库 -->
+  <script src="../js/react-dom.js"></script>
+  <!-- react类型检查的库 -->
+  <!-- 
+      通过props属性传递数据, 如果要进行类型限制和必要性限制
+        解决: 加载一个包 prop-types.js  加载这个包后,全局多一个变量 PropTypes
+        props属性类型检查和必要性检查的使用:
+        Person.propTypes = {
+          name:PropTypes.string.isRequired,
+          age:PropTypes.number,
+          gender:PropTypes.oneOf(["男","女"])
+        }
+        设置组件实例props属性的默认值:
+        Person.defaultProps = {
+          age:20,
+          sex:"男"
+        }
+
+   -->
+  <script src="../js/prop-types.js"></script>
+  <!-- JSX转JS的库 -->
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    /* 
+    class Test{
+      // 1. 定义a属性,在类的直接属性上 Test.a
+      static.a = {}
+      // 2. 在实例对象直接属性上 this.b
+      b = () => {}
+      // 3. 在类的原型对象上 this.c
+      c(){}
+    }
+  */
+    /* 
+    需求: 自定义用来显示一个人员信息的组件
+      1). 姓名必须指定
+      2). 如果性别没有指定, 默认为男
+      3). 如果年龄没有指定, 默认为18
+  */
+    // 后台传递的数据
+    const person = {
+      name: "Tom",
+      gender: "女",
+      age: 18,
+    };
+
+    // 1.定义组件
+    class Person extends React.Component {
+      // 给props对象添加类型检查,必要性约束等 (添加为静态属性)
+      static propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number,
+        gender: PropTypes.oneOf(["男", "女"]),
+      };
+      // 设置props对象的默认值
+      static defaultProps = {
+        age: 20,
+        gender: "男",
+      };
+
+      render() {
+        // 接收props传递进来的数据
+        const { name, age, gender } = this.props;
+        return (<ul>
+          <li>姓名:{name}</li>
+          <li>性别:{gender}</li>
+          <li>年龄:{age}</li>
+        </ul>)
+      };
+    }
+    /* 
+    给通过标签形式传入对象数据添加类型检查,如果不符合要求,则会报错
+  */
+    // Person.propTypes = {
+    //     name:PropTypes.string.isRequired,
+    //     age:PropTypes.number,
+    //     gender:PropTypes.oneOf(['男','女'])
+    //   }
+    // Person.defaultProps = {
+    //   age:18,
+    //   gender:"男",
+    // }
+
+    // 2.渲染组件到页面容器
+    /* 
+    以组件标签属性的形式,向组件中传递数据,将组件标签的属性和属性值,都挂载到组件实例对象的props属性上(this.props), 通过对象的解构赋值可以获取到传递进来的数据,
+    再将拿到的数据, 渲染到虚拟DOM上
+
+    可以对通过标签属性传递进来的数据,进行类型检查,必要性检查,以及设置默认值,需要借助一个包 prop-types.js, 下载并加载到html后,全局会多一个PropTypes变量,通过该变量, 可以对props对象进行约束,设置默认值
+  */
+    // ReactDOM.render(
+    //   <Person name={person.name} age={person.age} gender={person.gender} />, document.getElementById("container1"));
+
+    // 简写模式:表示将person对象中的所有属性,都添加到Person组件标签的属性上
+    ReactDOM.render(
+      <Person {...person} />,
+      document.getElementById("container1")
+    );
+  </script>
+</body>
+
+</html>

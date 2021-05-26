@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="container1"></div>
+  <div id="container2"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // (一) 创建虚拟DOM
+    class ChangeLike extends React.Component{
+      // (a) 构造函数
+      constructor(){
+        super();
+        // 第一步: 设置state初始化值, 
+        this.state = {   //特别注意: state的值是一个 [对象] 
+          isLikeMe:true,
+        };
+      }
+      
+      /* 
+        调用setState函数时所作的步骤:
+          1.修改state的值
+          2.重新调用render函数,重新渲染页面
+      */
+
+      // 定义点击事件回调函数 
+      setIsLikeMe = () => { //特别注意: 只能使用 [箭头函数], 该函数则是实例对象的直接属性
+        // 第三步: 更新state值 
+        this.setState({  //特别注意: setState是一个方法,调用时传入state值(对象)
+
+          isLikeMe: !this.state.isLikeMe, //获取最新的值, 进行 [取反] 后重新赋值
+        })
+      }
+
+      // (b) 渲染函数
+      render(){
+        // 第二步: 获取state值
+        const {isLikeMe} = this.state
+
+        // 绑定点击事件
+        return <h1 onClick={this.setIsLikeMe}>{isLikeMe? "你喜欢我":"我喜欢你"}</h1>
+      }
+    }
+
+    // (二) 渲染到页面容器
+    ReactDOM.render(<ChangeLike />,document.getElementById('container1'))
+  </script>
+</body>
+
+</html>

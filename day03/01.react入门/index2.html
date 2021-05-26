@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="box1"></div>
+  <div id="box2"></div>
+  <div id="box3"></div>
+  <!-- 
+    创建虚拟DOM对象的两种方式:
+      1.使用JS语法创建
+      2.使用JSX语法创建
+        (1) JSX使用类似模板字符串的形式创建dom对象(虚拟), 不需要加引号
+        (2) JSX中的{}中,写的表达式(作为js代码解析)
+           - {表达式}: 包括 变量名, 虚拟DOM对象, 有返回值的运算等
+   -->
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script>
+    /* 
+      第一种创建虚拟DOM
+    */
+    //1.JS创建虚拟DOM
+    const p = React.createElement('p',{className:"t1"},"p标签");
+    const div1 = React.createElement('div', {
+        id: "inner1",
+        className: "test"
+      },
+      "js创建虚拟DOM...",
+      p,p);
+    //2.渲染到容器DOM
+    ReactDOM.render(div1, document.getElementById('box1'))
+  </script>
+
+
+  <!-- 
+    第二种创建虚拟DOM
+   -->
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    //定义变量 
+    const id2= "div2";
+    const text = "JSX创建虚拟DOM...";
+
+    //1.创建虚拟DOM 
+    /* 
+      {}中放: 1.变量;  2.虚拟DOM对象
+    */
+    const div2 = <div id={id2}>{text}</div>
+    const div3 = <div>{div2}</div>
+
+    //2.渲染到容器
+    ReactDOM.render(div2, document.getElementById('box2'));
+    ReactDOM.render(div3, document.getElementById('box3'));
+  </script>
+
+
+</body>
+
+</html>

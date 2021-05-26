@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<!-- 
+  todoList案例: 
+    1.组件拆分
+      页面会发生变化的 (需要动态渲染的dom元素)
+      具备js功能的 (和事件相关的dom元素)
+      - 都可以单独形成一个组件
+    2.实现静态组件
+      将数据写死,不需要实现功能,将页面的呈现先写出来
+    3.实现动态组件
+      将功能添加进去,一般是绑定js事件,通过事件控制数据,最终更新页面
+-->
+
+<!-- 
+  组件可以相互嵌套:
+    1.父组件向子组件传递数据(或者说组件外,向组件内传递数据时),通过props属性可以实现
+    2.子组件向父组件传递数据
+      1) 在父组件中定义函数
+      2) 将该函数, 通过props属性,传入子组件
+      3) 子组件中调用该函数 (通过传参的形式)
+ -->
+
+<!-- 
+  react获取表单数据 (受控组件):
+    1.通过state和onChange事件,将表单数据自动收集到state中
+  -->
+
+<!-- 
+    只要是页面发生变化,只能通过setState方式实现, 也就必须设置state属性
+      1.页面发生变化,是因为数据发生变化
+      2.该数据和AddTodo组件和ShowTodos组件都有关联,所以将该数据保存到父组件的state属性中
+   -->
+
+<!-- 
+     数据以什么数据类型,进行保存,通常保存数据有三种方式: 
+      1.以变量保存字面量
+      2.以数组保存相同类型的数据集合
+      3.以对象保存键值对的数据集合
+
+      当前案例分析:
+        因为 "吃饭","睡觉","敲代码" 属于同种类型的数据, 只需要使用数组保存即可
+    -->
+<!-- 
+      react组件中,原则上不允许直接修改原数据
+        -可以通过[...arr]的方式,复制一个新数组进行更新数据的操作
+     -->
+
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // 定义父组件App
+    class App extends React.Component {
+      // 初始化state值,对象
+      state = {
+        todoList: ["吃饭--", "睡觉--", "敲代码--"]
+      }
+      // 定义一个函数,将该通过props属性传递给子组件,让子组件调用的方式,实现子传父数据
+      addToShow = (todo) => { //定义形参,用于接收子组件要传递的数据
+        // 获取state数据,是一个数组
+        const { todoList } = this.state;
+        // 更新state数据
+        this.setState({
+          // 通过扩展运算符,实现给数组添加数据
+          todoList: [todo, ...todoList]
+        })
+      }
+      render() {
+        const len = this.state.todoList.length
+        return <div>
+          <h1>任务列表组件</h1>
+          {/* 传递一个函数addToShow和数组长度值len */}
+          <AddTodo addToShow={this.addToShow} len={len} />
+          {/* 传递数组数据todoList */}
+          <ShowTodos todoList={this.state.todoList} />
+        </div>
+      }
+    }
+    // 定义子组件AddTodo
+    class AddTodo extends React.Component {
+      // 接收props数据时,需要进行检查
+      static propTyeps = {
+        addToShow: PropTypes.func.isRequired,
+        len: PropTypes.number.isRequired,
+      }
+
+      // 初始化state
+      state = {
+        todo: ""
+      }
+      // 触发onChange事件时,将当前输入值更新到state中
+      handlerChange = (e) => {
+        this.setState({
+          todo: e.target.value.trim(),
+        })
+      }
+      // 点击按钮时,要求将输入的值添加到任务列表中展示出来
+      /* 
+        要让当前子组件的数据,传递给另一个子组件,只能先传递给父组件,通过父组件进行渲染,或者通过父组件再传递给另一子组件
+      */
+      handlerClick = () => {
+        // 获取props传递函数
+        const { addToShow } = this.props;
+        // 获取当前组件的state数据
+        const { todo } = this.state;
+        // 调用函数
+        addToShow(todo);
+
+        // 要求点击结束后,需要将输入框清空,要清空输入框,则必须改变页面,则必须使用setState, 则必须将输入框的value值和state关联上
+        this.setState({
+          todo:""
+        })
+
+      }
+
+      render() {
+        // 接收props传递的len,更新到虚拟DOM
+        const { len } = this.props
+        // 获取state值,更新到虚拟DOM
+        const { todo } = this.state
+        return <div>
+          <input type="text" placeholder="请输入任务" onChange={this.handlerChange} value={todo} />
+          <button onClick={this.handlerClick}>添加任务 #{len}</button>
+        </div>
+      }
+    }
+    // 定义子组件ShowTodos
+    class ShowTodos extends React.Component {
+      // 接收props数据前,需要进行检查
+      static propTyeps = {
+        todoList: PropTypes.array.isRequired,
+      }
+
+      render() {
+        // 接收通过props属性传递进来的数据, 获得的是一个数组
+        const { todoList } = this.props
+        return <ul>
+          {
+            todoList.map((item, index) => {
+              return <li key={index}>{item}</li>
+            })
+          }
+        </ul>
+      }
+    }
+
+    // 渲染父组件 (因为渲染父组件时,子组件也会自动渲染)
+    ReactDOM.render(<App />, document.getElementById("cont"));
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<!-- 
+  特别注意: 
+    使用JSX创建虚拟DOM时, 和使用模板字符串创建dom元素类似
+    不同点:
+      1. 不需要加反引号
+      2. react创建的是虚拟dom,最后还需要将该虚拟dom渲染到页面容器
+      
+ -->
+<body>
+  <!-- 第一步: 在结构中定义一个容器 -->
+  <div id="container"></div>
+
+  <!-- 第二步: 引入React相关的js文件,注意引入的顺序 -->
+  <!-- 引入react核心js文件 -->
+  <script src="../js/react.js"></script>
+  <!-- 引入react操作dom的js文件,相当于react核心库的插件 -->
+  <script src="../js/react-dom.js"></script>
+  <!-- 引入babel文件,用于将JSX转JS -->
+  <script src="../js/babel.min.js"></script>
+
+  <!-- 第三步: 写JSX,必须声明babel,否则将无法识别JSX代码 -->
+  <script type="text/babel">
+
+    // 第四步: 使用JSX语法创建虚拟DOM元素
+    const h1 = <h1>Hello React</h1>
+    // 第五步: 将虚拟DOM元素,添加到页面容器
+    ReactDOM.render(h1, document.getElementById('container'))
+
+  </script>
+
+
+</body>
+
+</html>

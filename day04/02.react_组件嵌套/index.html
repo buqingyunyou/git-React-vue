@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="cont"></div>
+  <script src="../js/react.js"></script>
+  <script src="../js/react-dom.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script src="../js/babel.min.js"></script>
+
+  <script type="text/babel">
+    // 1.定义组件
+    /* 
+      流程:
+        1.拆分组件 (根据js功能和页面变化)
+        2.实现静态组件
+        3.实现动态组件
+          考虑是否需要state? 根据页面是否更新决定
+          考虑state挂载哪个组件? 根据state数据是否被共用
+          a)先写展示效果
+          考虑是否有组件间的数据传递? 使用props
+          b)再写js功能
+
+
+        (1) 子组件向父组件传递数据:
+          解决:
+            1. 在父组件中定义方法;
+            2. 将该方法以props属性,传递到子组件中;
+            3. 在子组件中,将[数据] 作为实参传递到该方法中进行调用;
+          注意: 
+            定义方式时,使用箭头函数进行定义,避免this指向问题
+            
+        (2) 组件外向组件内传递数据:
+          解决:
+            1. 在组件标签上添加属性,将数据赋值给标签属性
+            2. 在组件内部,使用this.props可以获取到数据
+
+
+        获取state
+          this.state.xxx 
+        更新state
+          this.setState({xxx:xxx})
+        获取props  (props是只读, 不能进行修改)
+          this.props.xxx 
+
+
+        props属性,存储的是外面传递进来的数据
+        state属性,存储的是组件内部的数据
+
+    */
+
+    // (1) 父组件App
+    class App extends React.Component {
+      // 初始化当前组件的state
+      state = {
+        todos: ['吃饭', '睡觉', '敲代码'],   //使用数组保存数据
+      }
+
+      // 在父组件中定义方法,通过props属性传递给子组件,子组件调用该方法,从而实现(将子组件数据传给父组件)
+      addTodo = (todo) => {
+        // 获取当前组件的state数据
+        const { todos } = this.state;
+
+        // 将实参添加到当前state中, 那么会重新渲染页面 (setState调用,会重新渲染页面)
+        this.setState({
+          todos: [todo, ...todos]
+        })
+      }
+
+      render() {
+        const len = this.state.todos.length;
+        return <div>
+          <h1>使用React组件方式实现todo添加功能</h1>
+          {/*将父组件的长度len,和方法addTodo(利用props属性)传递给子组件*/}
+          <AddTodo len={len} addTodo={this.addTodo} />
+          <ShowTodo todos={this.state.todos} />
+        </div>
+      }
+    }
+
+
+    // (2) 添加任务组件
+    class AddTodo extends React.Component {
+      // 接收props值,需要进行类型检查
+      static propTypes = {
+        addTodo: PropTypes.func.isRequired,
+        len:PropTypes.number.isRequired,
+      }
+
+      // 初始化addTodo的state,用于接收value值
+      state = {
+        todo: '',
+      }
+      // 定义点击事件回调函数
+      addClick = (e) => {
+        // 获取当前组件的state数据
+        const { todo } = this.state;
+        // 接收传递进来的addTodo方法
+        const { addTodo } = this.props;
+        // 判断state数据是否存在
+        if (!todo) {
+          alert("请输入待办事项");
+          return;
+        }
+        // addTodo方法调用,将数据以实参传进去
+        addTodo(todo);
+        // 方法调用完毕后,要清空输入框 (要清空input项,页面需要改变,则需要调用setState方法)
+        this.setState({
+          todo: '',
+        })
+      }
+      handlerChange = (e) => {
+        // 更新AddTodo的state (将value值更新到state中)
+        // 获取value值
+        const todo = e.target.value.trim();
+        // 将value值设置给state
+        this.setState({
+          todo,
+        })
+      }
+      render() {
+        // 接收通过props传递进来的len
+        const { len } = this.props;
+        const { todo } = this.state;
+        return <div>
+          {/* 要实现控制state,从而控制value值,则需要在标签上添加一个属性,将state值赋值给该属性 */}
+          <input type="text" placehoulder="请输入任务" onChange={this.handlerChange} value={todo} />
+          <button onClick={this.addClick}>添加 #{len}</button>
+        </div>
+      }
+    }
+
+
+    // (3) 展示任务列表组件
+    class ShowTodo extends React.Component {
+      // 只要设置到接收props数据,都要进行类型检查
+      static propTypes = {
+        todos:PropTypes.array.isRequired,
+      }
+
+      render() {
+        // 接收props数据 
+        const { todos } = this.props;
+        // 更新页面
+        return <ul>
+          {
+            todos.map((todo, index) => {
+              return <li key={index}>{todo}</li>
+            })
+          }
+        </ul>
+      }
+    }
+
+    // 2.渲染组件
+    ReactDOM.render(<App />, document.getElementById('cont'))
+
+
+  </script>
+
+
+</body>
+
+</html>
