@@ -26,6 +26,16 @@ export default class App extends Component {
     // 触发reducers函数调用
     store.dispatch(action);
   };
+  addIfOdd = () => {
+    const num = store.getState();
+    if (num % 2 === 0) return;
+    this.add(num);
+  };
+  addAsync = () => {
+    setTimeout(() => {
+      this.add(this.state);
+    }, 1000);
+  };
 
   componentDidMount() {
     // 定义订阅redux数据变化的的回调函数,如果变化,则重新渲染
@@ -47,8 +57,8 @@ export default class App extends Component {
         </select>
         <button onClick={this.add}>+</button>
         <button onClick={this.sub}>-</button>
-        <button>increment if odd</button>
-        <button>increment async</button>
+        <button onClick={this.addIfOdd}>increment if odd</button>
+        <button onClick={this.addAsync}>increment async</button>
       </div>
     );
   }
