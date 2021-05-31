@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <title>rem适配</title>
+    <style>
+      *{
+        margin:0;
+        padding:0;
+      }
+      /* 
+        html字体大小为3.75px, 根据屏幕大小等分100份, 每份就是3.75
+          要求50rem占所有屏幕的一半
+            如果屏幕大小是375px
+            则实际需要占据的宽度是187.5px
+            则187.5/50 = 3.75px  就是html字体大小
+       */
+      html{
+        /* font-size: 3.75px;  */
+      }
+      .box1{
+        float: left;
+        width: 50rem; 
+        height: 200px;
+        background-color:yellowgreen;
+      }
+      .box2{
+        float: left;
+        width: 50rem;
+        height: 200px;
+        background-color:greenyellow;
+      }
+      /* .box3{
+        float: left;
+        width: 50rem;
+        height: 200px;
+        background-color:yellowgreen;
+      } */
+
+
+    </style>
+  </head>
+  <body>
+
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+    <!-- <script src="./flexible.js"></script> -->
+    <script>
+      /* 
+        将屏幕大小分为100份
+        每份px值 = 屏幕px值 / 100
+        设计:  每份的px值 = html字体px值
+        
+        面试题: 以ipone7为基准设计,将屏幕分为10份,设计稿有一个元素为150px
+               请问该元素应该设置为多少rem?
+               1. 将html字体设置为 375px/10 = 37.5px
+               2. 元素 = 150px/37.5px = 40
+      */
+     /* 
+      rem适配的关键:
+        1. 将屏幕分为100份
+        2. 将每份的px值 = html字体px值
+        3. 设计稿 num px 
+            num / 每份屏幕px值
+            rem值 = num / (屏幕px值/100)
+     */
+      // 动态设置html字体大小
+      function setHtmlFontSize(){
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 100 + "px";
+      }
+      // 加载完立即调用
+      setHtmlFontSize();
+      // 设置屏幕尺寸变化事件回调
+      window.onresize = setHtmlFontSize;
+
+    </script>
+
+  </body>                        
+</html>

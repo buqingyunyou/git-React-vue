@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>像素单位</title>
+    <style>
+      /* (1) 单位: px */
+      /* 
+      固定值
+    */
+      /* .title{
+      width: 200px;
+      background-color: skyblue;
+    } */
+
+      /* (2) 单位: rem */
+      /* 
+      相对值: 相对于html标签字体的大小
+        问题: px如何转换成rem?
+          需求: 需要展示 x px大小的元素, 需要设置多少rem?
+            html字体大小 * y = x
+            => y = x / html字体大小
+    */
+      /* html{
+      font-size: 16px;
+    }
+    .title{
+      width: 10rem;  
+      background-color: skyblue;
+    } */
+
+      /* (3) 单位: em */
+      /* 
+      相对值: 相对于最近标签(包括自己,及祖先代)字体的大小
+    */
+      /* .box {
+        font-size: 100px;
+      }
+      p {
+        width: 10em;
+        font-size: 16px;
+        background-color: pink;
+      } */
+
+      /* (4) 单位: vw/vh */
+      /* 
+        相对值:相对于屏幕 (默认将屏幕分成100等分),50vw表示屏幕的一半
+        问题: 如何将px单位转成vw,wh?
+          需求: 需要展示x px大小的元素, 设置多少vw?
+            每等分vw的px值 = 屏幕大小(px值) / 100
+            结果 = x / (屏幕px值 / 100)
+      */
+      * {
+        margin: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      /* 头部导航 */
+      .title {
+        width: 53.3333333vw;
+        height: 50px;
+        background-color: yellowgreen;
+      }
+      /* 主体: 要求占满整个屏幕 */
+      .box {
+        width: 100%;
+        /* calc(100vh - 50px) 减号两边必须有空格,不能calc(100vh-50px) */
+        height: calc(100vh - 50px);
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="title">单位</p>
+    <div class="box"></div>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      .box {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: skyblue;
+      }
+      .mask {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <a href="http://www.atguigu.com">硅谷xxxxx</a>
+      <a href="http://www.atguigu.com">硅谷xxxxx</a>
+      <a href="http://www.atguigu.com">硅谷xxxxx</a>
+      <a href="http://www.atguigu.com">硅谷xxxxx</a>
+      <a href="http://www.atguigu.com">硅谷xxxxx</a>
+    </div>
+    <div class="mask"></div>
+
+    <!-- 可以通过引入fastclick.js库,解决误触问题 -->
+    <script>
+      if ("addEventListener" in document) {
+        document.addEventListener(
+          "DOMContentLoaded",
+          function () {
+            FastClick.attach(document.body);
+          },
+          false
+        );
+      }
+    </script>
+
+    <script>
+      const mask = document.querySelector(".mask");
+      const allA = document.querySelectorAll(".box a");
+
+      // 移动端touch事件和click事件都存在
+      mask.addEventListener("touchend", function () {
+        this.style.display = "none";
+      });
+      // 当触发touch事件时,会出现点击穿透现象,即也会触发点击事件
+      // 原因: 点击事件有300ms延迟,而touch事件没有事件延迟,所以两个事件都会触发
+
+      // 解决点击穿透现象,将页面上所有的点击事件的默认跳转行为阻止
+      // document.addEventListener("click", function (e) {
+      //   e.preventDefault();
+      // });
+
+      /* 
+        要求做到的效果: (无法实现: 有bug)
+          如果只是单纯的触屏,则可进行跳转
+          如果因为误触,可以通过触屏后移动一下,取消跳转
+      */
+      // for (var i = 0; i < allA.length; i++) {
+      //   allA[i].addEventListener("touchstart", function (e) {
+      //     // 设置一个变量,通过变量的值判断是否需要跳转
+      //     this.isMove = false;
+      //     console.log("touchstart", e);
+      //   });
+      //   allA[i].addEventListener("touchmove", function (e) {
+      //     this.isMove = true;
+      //     console.log("touchmove", e);
+      //   });
+      //   // 将所有点击事件阻止,那就没有了点击跳转功能,解决: 在触发touch事件时,手动进行跳转
+      //   allA[i].addEventListener("touchend", function (e) {
+      //     // 手动进行页面跳转
+      //     if (this.isMove) return; //如果isMove是true,则直接return,不会跳转
+      //     window.location.href = this.href;
+      //     console.log("touchend", e);
+      //   });
+      // }
+    </script>
+  </body>
+</html>
