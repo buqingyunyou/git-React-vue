@@ -12,7 +12,7 @@ export interface Action<T> {
 
 // 定义Users数组的类型,先定义User对象的类型
 export interface User {
-  key: number;
+  id: number;
   login: string;
   avatar_url: string;
   html_url: string;
@@ -23,4 +23,10 @@ export type Users = User[];
 // 定义异步操作函数操作的类型
 export interface AsyncActionCreator<T> {
   (params: T): (dispatch: Dispatch) => Promise<any>;
+}
+
+// 定义store中所有数据的类型
+export interface RootState{
+  loading:boolean,
+  users:Users,
 }
