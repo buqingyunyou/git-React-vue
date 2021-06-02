@@ -6,20 +6,18 @@ import { connect } from "react-redux";
 class UserList extends Component {
   // 接收props数据前进行检查
   static propTyeps = {
-    // users: PropTypes.array.isRequired,
-    // isLoading: PropTypes.bool.isRequired,
+    users: PropTypes.array.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   render() {
-    // 接收state数据
-    console.log(this.props);
     const { users, isLoading } = this.props;
-    console.log(users, isLoading);
 
     if (isLoading) {
       return <h1>Loading.......</h1>;
     }
-    // 如果users有数据,则渲染,没有则不渲染
+
+    // 接收state数据
     if (users.length) {
       return (
         <div className="row">
@@ -50,8 +48,8 @@ class UserList extends Component {
 // (2) 第二步: 给UI组件包裹一层容器组件,并将容器组件中的state数据或分发action传递给当前UI组件
 export default connect(
   (state) => ({
-    users: state,
-    isLoading: state,
+    isLoading: state.loading,
+    users:state.users,
   }),
   null
 )(UserList);

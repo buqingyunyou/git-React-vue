@@ -1,8 +1,9 @@
 import { Component } from "react";
 import CommentItem from "./CommentItem";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-export default class CommentList extends Component {
+class CommentList extends Component {
   // 接收props
   static propTypes = {
     comments: PropTypes.array.isRequired,
@@ -29,14 +30,8 @@ export default class CommentList extends Component {
         <ul className="list-group">
           {
             // 遍历数组,传递数据
-            comments.map((comment, index) => {
-              return (
-                <CommentItem
-                  key={comment.key}
-                  username={comment.username}
-                  content={comment.content}
-                />
-              );
+            comments.map((item) => {
+              return <CommentItem key={item.key} comment={item} />;
             })
           }
         </ul>
@@ -44,3 +39,8 @@ export default class CommentList extends Component {
     );
   }
 }
+
+export default connect(
+  (state) => ({ comments: state.comments }),
+  null
+)(CommentList);

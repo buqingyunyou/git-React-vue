@@ -3,24 +3,8 @@ import AddComment from "./pages/AddComment";
 import CommentList from "./pages/CommentList";
 
 export default class App extends Component {
-  state = {
-    comments: [
-      // { key: 1, username: "定格", content: "你好" },
-      // { username: "戈迪根", content: "hello" },
-    ],
-  };
-
-  // 更新state数据的方法
-  addComment = (username, content) => {
-    let { comments } = this.state;
-    this.setState({
-      comments: [{ key: Date.now(), username, content }, ...comments],
-    });
-  };
 
   render() {
-    const { comments } = this.state;
-
     return (
       <div>
         <header className="site-header jumbotron">
@@ -34,11 +18,11 @@ export default class App extends Component {
         </header>
         <div className="container">
           <div className="col-md-4">
-            <AddComment addComment={this.addComment} />
+            <AddComment />
           </div>
 
           <div className="col-md-8">
-            <CommentList comments={comments} />
+            <CommentList />
           </div>
         </div>
       </div>

@@ -1,8 +1,11 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
+// 引入action工厂函数
+import {addComment} from '../../redux/actions';
 
-export default class AddComment extends Component {
-  // 接收props中方法
+class AddComment extends Component {
+  // 声明接收props检查
   static propTypes = {
     addComment: PropTypes.func.isRequired,
   };
@@ -26,7 +29,8 @@ export default class AddComment extends Component {
   handlerSubmit = (e) => {
     e.preventDefault();
     const { addComment } = this.props;
-    const { username, content } = this.state;
+    const comment= this.state;
+    const {username,content} = this.state;
     if (!username) {
       alert("请输入用户名");
       return;
@@ -35,7 +39,9 @@ export default class AddComment extends Component {
       alert("请输入评论");
       return;
     }
-    addComment(username, content);
+
+    // 调用更新数据的方法
+    addComment(comment);
 
     // 清空输入框
     this.setState({
@@ -76,3 +82,5 @@ export default class AddComment extends Component {
     );
   }
 }
+// 向当前UI组件传递addComment更新数据的方法
+export default connect(null,{addComment})(AddComment);

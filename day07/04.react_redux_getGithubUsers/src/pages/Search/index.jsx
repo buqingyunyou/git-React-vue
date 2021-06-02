@@ -17,12 +17,8 @@ class Search extends Component {
   };
 
   shouldComponentUpdate(newProps, newState) {
-    //注意:参数一是新props数据,参数二是新state数据
-    if (newState.searchName === this.state.searchName) {
-      // 如果新旧数据相等,则不会render
-      return false;
-    }
-    return true;
+    // 判断新旧state是否相等,如果不相等,返回true,如果相等,返回false (判断不等即可实现)
+    return newState.searchName !== this.state.searchName;
   }
 
   // 定义onChange事件回调函数
@@ -69,3 +65,4 @@ class Search extends Component {
 }
 // 给Search组件传递getUsers方法
 export default connect(null, { getUsers, setLoading })(Search);
+

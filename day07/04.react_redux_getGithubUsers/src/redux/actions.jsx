@@ -7,6 +7,7 @@ export const setLoading = (isLoading) => {
     data: isLoading,
   };
 };
+ 
 
 // 异步操作,分为三步:
 // (1) 第一步: 是在外面定义action工厂函数
@@ -21,7 +22,6 @@ export const setUsers = (users) => {
 export const getUsers = (searchName) => {
 
   return async (dispatch) => {
-
     try {
       // 异步操作,发送请求
       const res = await axios({
@@ -35,14 +35,7 @@ export const getUsers = (searchName) => {
         avatar_url: users.avatar_url,
         html_url: users.html_url,
       }));
-      // 返回一个指示action对象
-      // return {
-      //   type: "GET_USERS",
-      //   data: users,
-      // };
-      // console.log(users);
 
-      console.log(users);
       // (3) 第三步: 分发action对象(在异步函数中,调用同步action工厂函数)
       dispatch(setUsers(users));
 
