@@ -25,23 +25,21 @@ function Search(props: Props) {
     // 通过setSearchName将数据收集到state中
     // 若需要调用value方法,则需要先进行断言 xx as 类型
     setSearchName((event.target as HTMLInputElement).value.trim());
-    
   };
 
   // 定义点击回调函数,发送请求
-  const search: () => void = () => {
+  const search: () => void = async () => {
     // (1) 判断当前state是否有数据,没有数据则return
-    if(!searchName){
+    if (!searchName) {
       alert("请输入查询内容");
       return;
     }
     // 设置loading状态
     setLoading(true);
     // 发送请求
-    getUsers(searchName);
+    await getUsers(searchName);
     // 设置loading状态
     setLoading(false);
-
   };
 
   return (

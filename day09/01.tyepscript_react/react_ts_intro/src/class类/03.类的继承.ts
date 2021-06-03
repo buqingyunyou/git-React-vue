@@ -28,11 +28,13 @@ class cat extends Animal {
     super(name); //调用父类的constructor方法
   }
   sayHi() {
-    return "meow," + super.sayHi(); //调用父类的sayHi
+    return "meow," + super.sayHi(); //调用父类原型的sayHi方法
   }
 }
 let c = new cat("Tom");
 console.log(c.sayHi()); //"meow,My name is Tom"
 console.log(c);
+// console.log(Animal.sayHi());
+
 
 
